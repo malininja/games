@@ -2,7 +2,15 @@
 <html>
 
 <head>
+  <style type="text/css">
+    span {
+      display: inline-block;
+      width: 100px;
+    }
+  </style>
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="./rijeci.js"></script>
 
   <script type="text/javascript">
     function safeApply($scope, fn) {
@@ -18,7 +26,7 @@
       }
     };
 
-    var data = ["džezva", "đak", "čudesno", "ćuk"];
+    var data = rijeci;
 
     function getOne() {
       var index = Math.floor(Math.random() * data.length);
@@ -28,7 +36,7 @@
     function get10() {
       var res = [];
 
-      while (res.length < 4) {
+      while (res.length < 10) {
         var item = getOne();
         if (!res.includes(item)) res.push(item);
       }
@@ -37,12 +45,24 @@
     }
 
     function removeLetters(word) {
-      return word.replace(/č|ć|dž|đ/gi, "_");
+      var style = 'style="color:red;"';
+      return word
+        .replace(/nj/g, "11") // makni 'nj' da 'j' ne zezne kasniju zamjenu
+        .replace(/lj/g, "22") // makni 'lj' da 'j' ne zezne kasniju zamjenu
+        //.replace(/č|ć|dž|đ/gi, "_")
+        .replace(/č|ć/g, `<b ${style}>c</b>`)
+        .replace(/Č|Ć/g, `<b ${style}>C</b>`)
+        .replace(/ije|je/g, `<b ${style}>_</b>`)
+        .replace(/dž|đ/g, `<b ${style}>d</b>`)
+        .replace(/Dž|Đ/g, `<b ${style}>D</b>`)
+        .replace(/11/g, "nj") // vrati 'nj'
+        .replace(/22/g, "lj") // vrati 'lj'
+        ;
     }
 
     var app = angular.module("hrvatski", []);
 
-    app.controller("cdController", ["$scope", function ($scope) {
+    app.controller("cdController", ["$scope", "$sce", function ($scope, $sce) {
       $scope.datas = [];
 
       $scope.setNewData = function () {
@@ -51,7 +71,8 @@
           var newDatas = [];
 
           words.forEach(word => {
-            newDatas.push({ original: word, replaced: removeLetters(word), color: 'white' });
+            var replaced = $sce.trustAsHtml(removeLetters(word));
+            newDatas.push({ original: word, replaced, color: 'white' });
           });
 
           $scope.datas = newDatas;
@@ -72,7 +93,7 @@
           isValid = data.original === data.result;
 
           if (isValid) {
-            data.color = 'white';
+            data.color = 'green';
           } else {
             data.color = 'red';
           }
@@ -81,12 +102,13 @@
     }]);
   </script>
 </head>
+
 <body>
 </body>
 <div ng-app="hrvatski">
   <div ng-controller="cdController">
     <div ng-repeat="data in datas">
-      <input ng-model="data.replaced" readonly />
+      <span ng-bind-html="data.replaced"></span>
       <span>=</span>
       <input ng-model="data.result" ng-style="{'background-color':data.color}" />
     </div>

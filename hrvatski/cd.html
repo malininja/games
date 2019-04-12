@@ -53,7 +53,6 @@
       var style = 'style="color:red;"';
       return word
         .replace(/nj/g, "11") // makni 'nj' da 'j' ne zezne kasniju zamjenu
-        .replace(/lj/g, "22") // makni 'lj' da 'j' ne zezne kasniju zamjenu
         //.replace(/č|ć|dž|đ/gi, "_")
         .replace(/č|ć/g, `<b ${style}>c</b>`)
         .replace(/Č|Ć/g, `<b ${style}>C</b>`)
@@ -61,7 +60,6 @@
         .replace(/dž|đ/g, `<b ${style}>d</b>`)
         .replace(/Dž|Đ/g, `<b ${style}>D</b>`)
         .replace(/11/g, "nj") // vrati 'nj'
-        .replace(/22/g, "lj") // vrati 'lj'
         ;
     }
 

@@ -2,6 +2,14 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
+
+  <style>
+    html * {
+      font-size: 1.1em !important;
+    }
+  </style>
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 
   <script type="text/javascript">
@@ -61,7 +69,7 @@
 
       $scope.setNewNumbers();
 
-      $scope.validate = function() {
+      $scope.validate = function () {
         var data;
         var result;
         var isValid = false;
@@ -77,12 +85,12 @@
 
           try {
             isValid = result === parseInt(data.result);
-          } catch(e) {
+          } catch (e) {
 
           }
 
           if (isValid) {
-            data.color = 'white';
+            data.color = 'green';
           } else {
             data.color = 'red';
           }
@@ -104,8 +112,5 @@
       <input class="number" ng-model="data.result" ng-style="{'background-color':data.color}" />
     </div>
 
-    <input type="button" value="provjeri" ng-click="validate()" </div>
-    <input type="button" value="ponovno" ng-click="setNewNumbers()" </div>
-  </div>
-
-</html>
+    <input type="button" value="provjeri" ng-click="validate()" </div> <input type="button" value="ponovno"
+      ng-click="setNewNumbers()" </div> </div> </html>
